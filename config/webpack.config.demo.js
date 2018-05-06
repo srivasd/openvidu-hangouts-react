@@ -127,7 +127,7 @@ module.exports = {
             loader: require.resolve('url-loader'),
             options: {
               limit: 10000,
-              name: 'media/[name].[ext]'
+              name: 'css/media/[name].[ext]'
             }
           },
           // Process JS with Babel.
@@ -210,7 +210,7 @@ module.exports = {
             // by webpacks internal loaders.
             exclude: [/\.js$/, /\.html$/, /\.json$/],
             options: {
-              name: 'media/[name].[ext]'
+              name: 'css/media/[name].[ext]'
             }
           }
           // ** STOP ** Are you adding a new loader?
