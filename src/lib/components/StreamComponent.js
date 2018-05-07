@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './StreamComponent.css';
-import Person from '@material-ui/icons/Person';
 
 export default class StreamComponent extends Component {
 
@@ -77,7 +76,7 @@ export default class StreamComponent extends Component {
     return (
       <div className="streamcomponent">
         <video src={this.state.videoSrc} id={'native-video-' + this.props.stream.connection.connectionId + '_webcam'} onClick={this.handleVideoClicked} autoPlay={true} muted={this.props.isMuted}></video>
-        <div id={'data-' + this.props.stream.connection.connectionId}><p><Person />{this.getNicknameTag()}</p></div>
+        <div id={'data-' + this.props.stream.connection.connectionId}><p>{this.getNicknameTag()}</p></div>
       </div>
     )
   }

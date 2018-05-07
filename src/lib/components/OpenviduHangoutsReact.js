@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './OpenviduHangoutsReact.css';
 import { OpenVidu } from 'openvidu-browser';
 import StreamComponent from './StreamComponent.js';
-import OnDemandVideo from '@material-ui/icons/OndemandVideo';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
@@ -12,6 +11,9 @@ import Typography from "material-ui/Typography";
 import IconButton from 'material-ui/IconButton';
 import Settings from '@material-ui/icons/Settings';
 import CropFree from '@material-ui/icons/CropFree';
+import CallEnd from '@material-ui/icons/CallEnd';
+import Mic from '@material-ui/icons/Mic';
+import Videocam from '@material-ui/icons/Videocam';
 
 class OpenviduHangoutsReact extends Component {
   
@@ -218,17 +220,24 @@ class OpenviduHangoutsReact extends Component {
         <AppBar position="static" id="session-header">
           <Toolbar>
             <Typography variant="title" color="inherit" value={valueSessionId}> {valueSessionId} </Typography>
-            <IconButton color="inherit" aria-label="Menu">
+            <IconButton id="settingsbutton" color="inherit" aria-label="settings">
               <Settings />
             </IconButton>
-            <IconButton color="inherit" aria-label="Menu">
+            <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree">
               <CropFree />
             </IconButton>
           </Toolbar>
       </AppBar>
-          <div id="session-header">
-            <OnDemandVideo /><h1 id="session-title" value={valueSessionId}>{valueSessionId}</h1>
-            <input id="buttonLeaveSession" type="button" onClick={this.handleClick} value="LeaveSession"/>
+          <div id="buttons">
+            <Button id="micbutton" variant="fab" color="default" aria-label="mic">
+              <Mic />
+            </Button>
+            <Button id="callendbutton" variant="fab" color="secondary" aria-label="callend" type="button" onClick={this.handleClick} value="LeaveSession">
+              <CallEnd />
+            </Button>
+            <Button variant="fab" color="inherit" aria-label="videocam">
+            <Videocam />
+            </Button>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={valueDistribution + "main-video"} >
             <StreamComponent stream={this.state.mainVideoStream} isMuted={true}></StreamComponent>
