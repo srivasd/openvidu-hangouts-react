@@ -10,9 +10,8 @@ html {
 
 .vertical-center {
 	width: 50%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
+	margin-top: 25%;
+	margin-left: 50%;
 	transform: translate(-50%, -50%);
 }
 
@@ -53,7 +52,6 @@ input#join-button {
 }
 
 #session-header {
-	margin-bottom: 20px;
 }
 
 #session-title {
@@ -80,6 +78,10 @@ video {
 	cursor: initial;
 }
 
+#session {
+	position: relative;
+}
+
 #session img {
 	width: 100%;
 	height: auto;
@@ -100,12 +102,11 @@ video {
 @media screen and (min-width: 992px) {
 	div#defaultmain-video {
 		width: 100%;
-		margin-top: -20px;
 	}
 	
 	div#defaultvideo-container {
 		position: absolute;
-		width: 45%;
+		width: 40%;
 		right: -5%;
 		bottom: 10%;
 		z-index: 20px;
@@ -115,7 +116,10 @@ video {
 		width: 40%;
 		display: inline-block;
 		margin-right: 10px;
+
 	}
+
+
 }
 
 
@@ -131,20 +135,24 @@ video {
 }
 
 .card-login {
-	margin-left: 35%;
+	margin: 0 auto;
+	width: 200px;
 }
 
 .button-login {
-	margin-left: 42%
+	margin: 0 auto;
+	width: 130px;
 }
 
 #buttons {
-	width: 50%;
-	position: absolute;
-	top: 70%;
-	left: 70%;
-	transform: translate(-50%, -50%);
 	z-index: 50;
+	width: 218px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 70%;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 #micbutton {
@@ -163,6 +171,21 @@ video {
 #cropfreebutton {
 	position: absolute;
 	right: 15px;
+}
+
+p {
+	color: white;
+	margin-bottom: 0;
+}
+
+.defaultstream-container {
+	position: relative;
+}
+
+div#defaultvideo-container .defaultstream-container .streamcomponent div{
+	position: absolute;
+	bottom: 0;
+
 }
 
 

@@ -13,6 +13,7 @@ import Settings from '@material-ui/icons/Settings';
 import CropFree from '@material-ui/icons/CropFree';
 import CallEnd from '@material-ui/icons/CallEnd';
 import Mic from '@material-ui/icons/Mic';
+import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
 
 class OpenviduHangoutsReact extends Component {
@@ -27,10 +28,13 @@ class OpenviduHangoutsReact extends Component {
                   session: undefined,
                   mainVideoStream: undefined,
                   localStream: undefined,
+                  muted: false,
                   remoteStreams: [],
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
+    this.muteMic = this.muteMic.bind(this);
+    this.fullscreen = this.fullscreen.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
   }
@@ -179,10 +183,27 @@ class OpenviduHangoutsReact extends Component {
         : 'dummytoken' + this.participantId;
     }
 
+    muteMic(){
+      this.setState({
+        muted: !this.state.muted,
+      })
+    }
+
+    fullscreen(){
+      console.log("Fullscreen");
+      var elem = document.getElementsByName('video');
+      console.log(elem);
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      }
+    }
+
   render() {
     var valueSessionId = this.state.valueSessionId;
     var valueUserName = this.state.valueUserName;
     var valueDistribution = this.state.stateDistributon;
+    var valueMuted = this.state.muted;
+    console.log(valueMuted);
       return (
         <div id= "main-container" className="container">
         { this.state.session === undefined ? 
@@ -223,14 +244,14 @@ class OpenviduHangoutsReact extends Component {
             <IconButton id="settingsbutton" color="inherit" aria-label="settings">
               <Settings />
             </IconButton>
-            <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree">
+            <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree" onClick={this.fullscreen}>
               <CropFree />
             </IconButton>
           </Toolbar>
       </AppBar>
           <div id="buttons">
-            <Button id="micbutton" variant="fab" color="default" aria-label="mic">
-              <Mic />
+            <Button id="micbutton" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
+              { valueMuted === false ? <Mic /> : <MicOff /> }
             </Button>
             <Button id="callendbutton" variant="fab" color="secondary" aria-label="callend" type="button" onClick={this.handleClick} value="LeaveSession">
               <CallEnd />
@@ -240,12 +261,12 @@ class OpenviduHangoutsReact extends Component {
             </Button>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={valueDistribution + "main-video"} >
-            <StreamComponent stream={this.state.mainVideoStream} isMuted={true}></StreamComponent>
+            <StreamComponent stream={this.state.mainVideoStream} isMuted={valueMuted}></StreamComponent>
           </div> : null }
           <div id= {valueDistribution + "video-container"} >
-          { this.state.localStream !== undefined ? <div className= {valueDistribution + "stream-container"} >
-              <StreamComponent stream={this.state.localStream} isMuted={true} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
-            </div> : null }
+          { /*this.state.localStream !== undefined ? <div className= {valueDistribution + "stream-container"} >
+              <StreamComponent stream={this.state.localStream} isMuted={valueMuted} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
+        </div> : null */}
           { this.state.remoteStreams.map((s, i) => <div key={i} className= {valueDistribution + "stream-container"} >
               <StreamComponent stream={s} isMuted={false} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
             </div>) }
