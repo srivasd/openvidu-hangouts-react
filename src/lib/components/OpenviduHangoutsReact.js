@@ -191,10 +191,24 @@ class OpenviduHangoutsReact extends Component {
 
     fullscreen(){
       console.log("Fullscreen");
-      var elem = document.getElementsByName('video');
-      console.log(elem);
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
+      var element = document.getElementById("root");
+      if ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+      (!document.mozFullScreen && !document.webkitIsFullScreen)) {               // current working methods
+        if (element.requestFullScreen) {
+          element.requestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+      } else {
+        if (document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
       }
     }
 
