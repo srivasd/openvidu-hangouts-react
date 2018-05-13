@@ -246,7 +246,7 @@ class OpenviduHangoutsReact extends Component {
                   <TextField className="form-control" type="text" label="Participant" id="userName" value={valueUserName} onChange={this.handleChangeUserName.bind(this)}required/>
                   <br />
                   <br />
-                  <TextField className="form-control" type="text" label="Session" id="sessionId" ref={(input) => { this.sessionId = input; }} value={valueSessionId} onChange={this.handleChangeSessionId.bind(this)}required/>
+                  <TextField className="form-control" type="text" label="Session" id="sessionId" inputRef={(input) => { this.sessionId = input; }} value={valueSessionId} onChange={this.handleChangeSessionId.bind(this)}required/>
               </CardContent>
               <CardActions className="button-login">
                 <Button variant="raised" color="primary" id="join-button" name="commit" type="submit" >
