@@ -16,6 +16,7 @@ import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
 
+
 class OpenviduHangoutsReact extends Component {
   
   constructor(props){
@@ -26,6 +27,7 @@ class OpenviduHangoutsReact extends Component {
                   stateToken: this.props.token,
                   stateDistributon: this.props.distribution,
                   session: undefined,
+                  publisher: undefined,
                   mainVideoStream: undefined,
                   localStream: undefined,
                   muted: false,
@@ -34,6 +36,7 @@ class OpenviduHangoutsReact extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
     this.muteMic = this.muteMic.bind(this);
+    this.muteCam = this.muteCam.bind(this);
     this.fullscreen = this.fullscreen.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -101,7 +104,7 @@ class OpenviduHangoutsReact extends Component {
         mySession.connect(token, '{"clientData": "' + this.state.valueUserName + '"}', (error) => {
             
           if (!error) {
-            let publisher = that.OV.initPublisher('', {
+            var publisher = that.OV.initPublisher('', {
               audio: true,
               video: true,
               quality: 'MEDIUM'
@@ -186,7 +189,11 @@ class OpenviduHangoutsReact extends Component {
     muteMic(){
       this.setState({
         muted: !this.state.muted,
-      })
+      });
+    }
+
+    muteCam(){
+      console.log("Cam muted");
     }
 
     fullscreen(){
@@ -264,14 +271,17 @@ class OpenviduHangoutsReact extends Component {
           </Toolbar>
       </AppBar>
           <div id="buttons">
-            <Button id="micbutton" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
-              { valueMuted === false ? <Mic /> : <MicOff /> }
-            </Button>
+              { valueMuted === false ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
+                                        <Mic style={{color: 'white'}} />
+                                       </Button> 
+            : <Button id="micbuttondisabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
+                <MicOff />
+              </Button> }
             <Button id="callendbutton" variant="fab" color="secondary" aria-label="callend" type="button" onClick={this.handleClick} value="LeaveSession">
               <CallEnd />
             </Button>
-            <Button variant="fab" color="inherit" aria-label="videocam">
-            <Videocam />
+            <Button id="cambutton" variant="fab" color="default" aria-label="videocam" onClick={this.muteCam}>
+              <Videocam style={{color: 'white'}}/>
             </Button>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={valueDistribution + "main-video"} >

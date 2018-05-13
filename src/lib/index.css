@@ -154,8 +154,17 @@ video {
 	margin-right:auto;
 }
 
-#micbutton {
+#micbuttonenabled {
 	margin-right: 25px;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+#micbuttondisabled {
+	margin-right: 25px;
+}
+
+#cambutton {
+	background: rgba(0, 0, 0, 0.5);
 }
 
 #callendbutton {
