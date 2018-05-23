@@ -15,6 +15,7 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
+import axios from 'axios';
 
 
 class OpenviduHangoutsReact extends Component {
@@ -68,7 +69,7 @@ class OpenviduHangoutsReact extends Component {
       this.OV = new OpenVidu();
 
       this.setState({
-        session: this.OV.initSession("wss://" + this.state.stateWsUrl + ":8443/" + this.state.valueSessionId + '?secret=MY_SECRET'),
+        session: this.OV.initSession(),
       }, () => {
 
         var mySession = this.state.session;
@@ -86,7 +87,7 @@ class OpenviduHangoutsReact extends Component {
             remoteStreams: myRemoteStreams
           });
 
-          mySession.subscribe(event.stream, '');
+          mySession.subscribe(event.stream, undefined);
 
         });
 
@@ -99,15 +100,21 @@ class OpenviduHangoutsReact extends Component {
         
         var that = this;
 
-        var token = this.getCurrentToken();
+        //var token = this.getCurrentToken();
         
-        mySession.connect(token, '{"clientData": "' + this.state.valueUserName + '"}', (error) => {
-            
-          if (!error) {
-            var publisher = that.OV.initPublisher('', {
-              audio: true,
-              video: true,
-              quality: 'MEDIUM'
+        this.getToken(this.state.valueSessionId).then(token => {
+
+          mySession.connect(token, {clientData: this.state.valueUserName}).then(() => {
+              
+            var publisher = that.OV.initPublisher(undefined, {
+              audioSource: undefined,
+              videoSource: undefined,
+              publishAudio: true,
+              publishVideo: true,
+              resolution: '640x480',
+              frameRate: 30,
+              insertMode: 'APPEND',
+              mirror: false
             });
 
             var streamInterval = setInterval(function(){
@@ -120,15 +127,79 @@ class OpenviduHangoutsReact extends Component {
               }})}, 200);
 
               mySession.publish(publisher);
-          
-          } else {
+                  
+          }).catch (error => {
             console.log('There was an error connecting to the session:', error.code, error.message);
-          }
-                
+          });
+
         });
         return false;
       });    
     }
+
+    //var OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+
+    getToken(mySessionId) {
+	    return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
+    };
+
+    createSession(sessionId) {
+      var OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+      console.log(sessionId);
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'post',
+          url: OPENVIDU_SERVER_URL + "/api/sessions",
+          data: JSON.stringify({ customSessionId: sessionId }),
+          headers: {
+            "Authorization": "Basic " + btoa("OPENVIDUAPP:MY_SECRET"),
+            "Content-Type": "application/json"
+          }
+        }).then(response => {
+          console.log(response);
+          var result = JSON.parse(response.request.response);
+          console.log(result["id"]);
+          resolve(result["id"]);
+          return result["id"];
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            resolve(sessionId);
+            return sessionId;
+          } else {
+            console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + OPENVIDU_SERVER_URL);
+            if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at "' + OPENVIDU_SERVER_URL +
+              '"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
+              'is up and running at "' + OPENVIDU_SERVER_URL + '"')) {
+              window.location.assign(OPENVIDU_SERVER_URL + '/accept-certificate');
+            }
+          }
+        });
+      });
+    };
+
+    createToken(sessionId) {
+      var OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+      console.log(sessionId);
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'post',
+          url: OPENVIDU_SERVER_URL + "/api/tokens",
+          data: JSON.stringify({ session: sessionId }),
+          headers: {
+            "Authorization": "Basic " + btoa("OPENVIDUAPP:MY_SECRET"),
+            "Content-Type": "application/json"
+          }
+        }).then((response) => {
+          console.log(response);
+          resolve(response.data.token);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+      });
+    };
     
     leaveSession() {
       var mySession = this.state.session;
