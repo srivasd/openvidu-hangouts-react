@@ -26,7 +26,6 @@ class OpenviduHangoutsReact extends Component {
                   valueUserName: 'Participant ' + this.props.participantId,
                   stateWsUrl: this.props.wsUrl,
                   stateToken: this.props.token,
-                  stateDistributon: this.props.distribution,
                   session: undefined,
                   publisher: undefined,
                   mainVideoStream: undefined,
@@ -293,7 +292,6 @@ class OpenviduHangoutsReact extends Component {
   render() {
     var valueSessionId = this.state.valueSessionId;
     var valueUserName = this.state.valueUserName;
-    var valueDistribution = this.state.stateDistributon;
     var valueMuted = this.state.muted;
     console.log(valueMuted);
       return (
@@ -355,14 +353,14 @@ class OpenviduHangoutsReact extends Component {
               <Videocam style={{color: 'white'}}/>
             </Button>
           </div>
-          { this.state.mainVideoStream !== undefined ? <div id={valueDistribution + "main-video"} >
+          { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
             <StreamComponent stream={this.state.mainVideoStream} isMuted={valueMuted}></StreamComponent>
           </div> : null }
-          <div id= {valueDistribution + "video-container"} >
-          { /*this.state.localStream !== undefined ? <div className= {valueDistribution + "stream-container"} >
+          <div id= {"video-container"} >
+          { /*this.state.localStream !== undefined ? <div className= {"stream-container"} >
               <StreamComponent stream={this.state.localStream} isMuted={valueMuted} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
         </div> : null */}
-          { this.state.remoteStreams.map((s, i) => <div key={i} className= {valueDistribution + "stream-container"} >
+          { this.state.remoteStreams.map((s, i) => <div key={i} className= {"stream-container"} >
               <StreamComponent stream={s} isMuted={false} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
             </div>) }
           </div>

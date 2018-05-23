@@ -62,7 +62,7 @@ input#join-button {
 	margin-top: 20px;
 }
 
-#defaultvideo-container video {
+#video-container video {
 	position: relative;
 	float: left;
 	cursor: pointer;
@@ -73,7 +73,7 @@ video {
 	height: auto;
 }
 
-#defaultmain-video video {
+#main-video video {
 	cursor: initial;
 }
 
@@ -89,7 +89,7 @@ video {
 	vertical-align: baseline;
 }
 
-#session #defaultvideo-container img {
+#session #video-container img {
 	position: relative;
 	float: left;
 	width: 50%;
@@ -99,11 +99,11 @@ video {
 }
 
 @media screen and (min-width: 992px) {
-	div#defaultmain-video {
+	div#main-video {
 		width: 100%;
 	}
 	
-	div#defaultvideo-container {
+	div#video-container {
 		position: absolute;
 		width: 40%;
 		right: -5%;
@@ -111,7 +111,7 @@ video {
 		z-index: 20px;
 	}
 	
-	div#defaultvideo-container .defaultstream-container{
+	div#video-container .stream-container{
 		width: 40%;
 		display: inline-block;
 		margin-right: 10px;
@@ -126,7 +126,7 @@ video {
 
 @media screen and (max-width: 991px) {
 	
-	div#defaultvideo-container .defaultstream-container{
+	div#video-container .stream-container{
 		width: 47.42%;
 		display: inline-block;
 		margin-right: 10px;
@@ -186,17 +186,17 @@ p {
 	margin-bottom: 0;
 }
 
-.defaultstream-container {
+.stream-container {
 	position: relative;
 }
 
-div#defaultvideo-container .defaultstream-container .streamcomponent div{
+div#video-container .stream-container .streamcomponent div{
 	position: absolute;
 	bottom: 0;
 
 }
 
-div#defaultmain-video .streamcomponent div{
+div#main-video .streamcomponent div{
 	position: absolute;
 	bottom: 3px;
 
