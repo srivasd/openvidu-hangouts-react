@@ -270,7 +270,13 @@ class OpenviduHangoutsReact extends Component {
 
     fullscreen(){
       console.log("Fullscreen");
-      var element = document.getElementById("root");
+      
+      //var element = document.documentElement;
+      var element = document.getElementById("videoCallId");
+
+      var videoCall = document.getElementsByClassName("videoCall");
+      console.log(videoCall);
+
       if ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
       (!document.mozFullScreen && !document.webkitIsFullScreen)) {               // current working methods
         if (element.requestFullScreen) {
@@ -280,6 +286,7 @@ class OpenviduHangoutsReact extends Component {
         } else if (element.webkitRequestFullScreen) {
           element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
         }
+        videoCall[0].style.width = '70.75%';
       } else {
         if (document.cancelFullScreen) {
           document.cancelFullScreen();
@@ -288,6 +295,7 @@ class OpenviduHangoutsReact extends Component {
         } else if (document.webkitCancelFullScreen) {
           document.webkitCancelFullScreen();
         }
+        videoCall[0].style.width = '50%';
       }
     }
 
@@ -295,7 +303,7 @@ class OpenviduHangoutsReact extends Component {
     var valueSessionId = this.state.valueSessionId;
     var valueMuted = this.state.muted;
       return (
-        <div className = {"videoCall"}>
+        <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
         <AppBar position="static" id="session-header">
           <Toolbar>
