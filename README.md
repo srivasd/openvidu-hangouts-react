@@ -17,16 +17,15 @@ To use AngularOpenVidu, [WebRTC](https://en.wikipedia.org/wiki/WebRTC) support i
 ### App Demo
 
 <p align="center">
-   <img src="images/login.png" alt="screencast">
+   <img src="images/loginhangouts.png" alt="screencast">
 </p>
 
 <p align="center">
-   <img src="images/app-demo.png" alt="screencast">
+   <img src="images/videocallhangouts.png" alt="screencast">
 </p>
 
-In this demo you will see a use case of `openvidu-insecure-react-library`, where you can test ALL the features included in this component.
+In this demo you will see a use case of `openvidu-hangouts-react`, where you can test ALL the features included in this component.
 
-Link to the repository: https://github.com/srivasd/demo-openvidu-react
 
 ### Features
 
@@ -38,20 +37,112 @@ Link to the repository: https://github.com/srivasd/demo-openvidu-react
 
 ### Installation
 
-1. Install `openvidu-insecure-react-library` node module through npm:
+1. Install `openvidu-hangouts-react` node module through npm:
 
-`npm i openvidu-insecure-react-library --save` or `yarn add openvidu-insecure-react-library `
+`npm i openvidu-hangouts-react --save` or `yarn add openvidu-hangouts-react `
 
-2. Import `OpenviduReact` to your App.js and use it in this way:
+2. Also you have to install some dependencies in order to import material library correctly:
+
+`npm i @material-ui/core --save-dev`
+
+`npm i @material-ui/icons --save-dev`
+
+3. Import `OpenviduReact` to your App.js and use it in this way:
 
 ````
-import React from 'react';
-import OpenviduReact from 'openvidu-insecure-react-library';
-import 'openvidu-insecure-react-library/build/css/index.css';
+import React, { Component } from 'react';
+import './App.css';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import OpenviduReact from 'openvidu-hangouts-react';
+import 'openvidu-hangouts-react/build/index.css';
 
-const App = () => (
-  <OpenviduReact wsUrl={"localhost"} sessionId={"A"} participantId={1} token={"ljadskblvlifuvbklieu14857362sff45"} distribution={"default"} />
-);
+  class App extends Component {
+
+    constructor(props) {
+      super(props);
+      this.child = React.createRef();
+      this.state = {
+        valueSessionId: 'Session A',
+        valueUserName: 'Participant' + Math.floor(Math.random() * 100),
+        showLogin: true
+      }
+
+      this.onClick = this.onClick.bind(this);
+      this.updateShowLogin = this.updateShowLogin.bind(this);
+    }
+
+    handleChangeSessionId(e){
+      this.setState({
+        valueSessionId : e.target.value,
+      });
+    }
+  
+    handleChangeUserName(e){
+      this.setState({
+        valueUserName : e.target.value,
+      });
+    }
+
+    onClick(e) {
+      this.child.current.joinSession();
+      this.updateShowLogin(e);
+    }
+
+    updateShowLogin(e) {
+      e.preventDefault();
+      this.setState({
+        showLogin: !this.state.showLogin
+      })
+    }
+
+    render () {
+      var valueSessionId = this.state.valueSessionId;
+      var valueUserName = this.state.valueUserName;
+      var valueShowLogin = this.state.showLogin;
+      return (
+        <div id= "main-container" className="container">
+        { valueShowLogin === true ? 
+        <div id="join">
+          <AppBar position="static" color="primary">
+            <Toolbar>
+              <Typography variant="title" color="inherit">
+                React Openvidu Hangouts 
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <div id="join-dialog" className="jumbotron vertical-center">
+          <Card className="card">
+              <Typography variant="display1" color="secondary" align="center">
+                  Join a video session
+              </Typography>
+              <form className="form-group" onSubmit={this.handleSubmit}>
+              <CardContent className="card-login">
+                  <TextField className="form-control" type="text" label="Participant" id="userName" value={valueUserName} onChange={this.handleChangeUserName.bind(this)}required/>
+                  <br />
+                  <br />
+                  <TextField className="form-control" type="text" label="Session" id="sessionId" inputRef={(input) => { this.sessionId = input; }} value={valueSessionId} onChange={this.handleChangeSessionId.bind(this)}required/>
+              </CardContent>
+              <CardActions className="button-login">
+                <Button variant="raised" color="primary" id="join-button" name="commit" onClick={this.onClick}>
+                  JOIN
+                </Button>
+              </CardActions>
+          </form>    
+          </Card>
+          </div>
+        </div> : null }
+          <OpenviduReact updateLogin = {this.updateShowLogin} ref={this.child} wsUrl={"localhost"} sessionId={valueSessionId} participantId={valueUserName}/>
+        </div>
+      );
+    }
+  }
 
 export default App;
 ````
@@ -61,16 +152,10 @@ export default App;
 | `wsUrl`			| `String` | required | Websocket URL pointing to your [OpenVidu Server][openvidu-server] |
 | `sessionId`		| `String` | required | An id for the session you want to join to |
 | `participantId`	| `String` | required | An id for the current participant joining the session |
-| `token`	| `String` | optional | Token used to identify secure sessions |
-| `distribution`	| `String` | required | Id used to select your favourite distibution |
+| `updateLogin`	| `function` | required | Function to toggle between session states |
+| `ref`	| `fucntion` | required | Refers the child component OpenviduReact in order to init session |
 
 
 3. Deploy OpenVidu Server
 
 Follow the instructions in [this page](http://openvidu.io/docs/reference-docs/openvidu-artifacts/) to deploy it with docker.
-
-
-
-
-
-
