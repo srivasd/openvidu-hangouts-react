@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './OpenviduHangoutsReact.css';
 import { OpenVidu } from 'openvidu-browser';
 import StreamComponent from './StreamComponent.js';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
@@ -22,10 +20,9 @@ class OpenviduHangoutsReact extends Component {
   
   constructor(props){
     super(props);
-    this.state = {valueSessionId: 'Session ' + this.props.sessionId,
-                  valueUserName: 'Participant ' + this.props.participantId,
+    this.state = {valueSessionId: this.props.sessionId,
+                  valueUserName: this.props.participantId,
                   stateWsUrl: this.props.wsUrl,
-                  stateToken: this.props.token,
                   session: undefined,
                   publisher: undefined,
                   mainVideoStream: undefined,
@@ -47,8 +44,8 @@ class OpenviduHangoutsReact extends Component {
     this.joinSession();
   }
 
-  handleClick(){
-    this.leaveSession();
+  handleClick(e){
+    this.leaveSession(e);
   }
 
   handleChangeSessionId(e){
@@ -60,6 +57,13 @@ class OpenviduHangoutsReact extends Component {
   handleChangeUserName(e){
     this.setState({
       valueUserName : e.target.value,
+    });
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      valueSessionId: nextProps.sessionId,
+      valueUserName: nextProps.participantId
     });
   }
 
@@ -98,8 +102,6 @@ class OpenviduHangoutsReact extends Component {
         });
         
         var that = this;
-
-        //var token = this.getCurrentToken();
         
         this.getToken(this.state.valueSessionId).then(token => {
 
@@ -136,14 +138,12 @@ class OpenviduHangoutsReact extends Component {
       });    
     }
 
-    //var OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-
     getToken(mySessionId) {
 	    return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
     };
 
     createSession(sessionId) {
-      var OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+      var OPENVIDU_SERVER_URL = "https://" + this.state.stateWsUrl + ":4443";
       console.log(sessionId);
       return new Promise((resolve, reject) => {
         axios({
@@ -178,7 +178,7 @@ class OpenviduHangoutsReact extends Component {
     };
 
     createToken(sessionId) {
-      var OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+      var OPENVIDU_SERVER_URL = "https://" + this.state.stateWsUrl + ":4443";
       console.log(sessionId);
       return new Promise((resolve, reject) => {
         axios({
@@ -200,7 +200,7 @@ class OpenviduHangoutsReact extends Component {
       });
     };
     
-    leaveSession() {
+    leaveSession(e) {
       var mySession = this.state.session;
       
       if(this.OV) {mySession.disconnect();}
@@ -214,6 +214,8 @@ class OpenviduHangoutsReact extends Component {
         valueUserName: 'Participant ' + this.props.participantId,
         localStream: undefined,
       });
+
+      this.props.updateLogin(e);
 
     }
 
@@ -291,42 +293,9 @@ class OpenviduHangoutsReact extends Component {
 
   render() {
     var valueSessionId = this.state.valueSessionId;
-    var valueUserName = this.state.valueUserName;
     var valueMuted = this.state.muted;
-    console.log(valueMuted);
       return (
-        <div id= "main-container" className="container">
-        { this.state.session === undefined ? 
-        <div id="join">
-          <AppBar position="static" color="primary">
-            <Toolbar>
-              <Typography variant="title" color="inherit">
-                React Openvidu Hangouts 
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <div id="join-dialog" className="jumbotron vertical-center">
-          <Card className="card">
-              <Typography variant="display1" color="secondary" align="center">
-                  Join a video session
-              </Typography>
-              <form className="form-group" onSubmit={this.handleSubmit}>
-              <CardContent className="card-login">
-                  <TextField className="form-control" type="text" label="Participant" id="userName" value={valueUserName} onChange={this.handleChangeUserName.bind(this)}required/>
-                  <br />
-                  <br />
-                  <TextField className="form-control" type="text" label="Session" id="sessionId" inputRef={(input) => { this.sessionId = input; }} value={valueSessionId} onChange={this.handleChangeSessionId.bind(this)}required/>
-              </CardContent>
-              <CardActions className="button-login">
-                <Button variant="raised" color="primary" id="join-button" name="commit" type="submit" >
-                  JOIN
-                </Button>
-              </CardActions>
-          </form>    
-          </Card>
-          </div>
-        </div> : null }
-  
+        <div className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
         <AppBar position="static" id="session-header">
           <Toolbar>
@@ -365,7 +334,7 @@ class OpenviduHangoutsReact extends Component {
             </div>) }
           </div>
         </div> : null }
-      </div>
+        </div>
       ); 
   }
 }

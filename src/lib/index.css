@@ -7,6 +7,11 @@ html {
 #main-container {
 }
 
+.videoCall {
+	width: 50%;
+	margin: 0 auto;
+}
+
 .vertical-center {
 	width: 50%;
 	margin-top: 25%;
