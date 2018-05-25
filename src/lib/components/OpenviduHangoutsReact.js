@@ -28,7 +28,6 @@ class OpenviduHangoutsReact extends Component {
                   publisher: undefined,
                   mainVideoStream: undefined,
                   localStream: undefined,
-                  muted: false,
                   remoteStreams: [],
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -360,14 +359,14 @@ class OpenviduHangoutsReact extends Component {
               </Button> }
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
-            <StreamComponent stream={this.state.mainVideoStream} isMuted={valueAudio}></StreamComponent>
+            <StreamComponent stream={this.state.mainVideoStream}></StreamComponent>
           </div> : null }
           <div id= {"video-container"} >
           { /*this.state.localStream !== undefined ? <div className= {"stream-container"} >
-              <StreamComponent stream={this.state.localStream} isMuted={valueMuted} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
+              <StreamComponent stream={this.state.localStream} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
         </div> : null */}
           { this.state.remoteStreams.map((s, i) => <div key={i} className= {"stream-container"} >
-              <StreamComponent stream={s} isMuted={false} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
+              <StreamComponent stream={s} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
             </div>) }
           </div>
         </div> : null }
