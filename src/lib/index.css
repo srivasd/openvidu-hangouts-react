@@ -168,8 +168,11 @@ video {
 	margin-right: 25px;
 }
 
-#cambutton {
+#cambuttonenabled {
 	background: rgba(0, 0, 0, 0.5);
+}
+
+#cambuttondisabled {
 }
 
 #callendbutton {

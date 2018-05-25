@@ -13,6 +13,7 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
+import VideocamOff from '@material-ui/icons/VideocamOff';
 import axios from 'axios';
 
 
@@ -120,10 +121,11 @@ class OpenviduHangoutsReact extends Component {
 
             var streamInterval = setInterval(function(){
               that.setState({
+                publisher: publisher,
                 localStream: publisher.stream,
                 mainVideoStream: that.state.localStream
               }, () => {
-                if(that.state.localStream!==undefined&&that.state.mainVideoStream!==undefined){
+                if(that.state.localStream!==undefined&&that.state.mainVideoStream!==undefined&&that.state.publisher!==undefined){
                   clearInterval(streamInterval);
               }})}, 200);
 
@@ -259,26 +261,45 @@ class OpenviduHangoutsReact extends Component {
     }
 
     muteMic(){
-      this.setState({
-        muted: !this.state.muted,
-      });
+      if(this.state.publisher!==undefined){
+        var actualPublisher = this.state.publisher;
+        console.log(actualPublisher.properties.publishAudio);
+        actualPublisher.properties.publishAudio = !actualPublisher.properties.publishAudio;
+        actualPublisher.publishAudio(actualPublisher.properties.publishAudio);
+        console.log(actualPublisher.properties.publishAudio);
+        this.setState({
+          publisher: actualPublisher
+        }, () => {
+          console.log(this.state.publisher);
+        });
+      }
     }
 
     muteCam(){
-      console.log("Cam muted");
+      if(this.state.publisher!==undefined){
+        var actualPublisher = this.state.publisher;
+        console.log(actualPublisher.properties.publishVideo);
+        actualPublisher.properties.publishVideo = !actualPublisher.properties.publishVideo;
+        actualPublisher.publishVideo(actualPublisher.properties.publishVideo);
+        console.log(actualPublisher.properties.publishVideo);
+        this.setState({
+          publisher: actualPublisher
+        }, () => {
+          console.log(this.state.publisher);
+        });
+      }
     }
 
     fullscreen(){
       console.log("Fullscreen");
       
-      //var element = document.documentElement;
       var element = document.getElementById("videoCallId");
 
       var videoCall = document.getElementsByClassName("videoCall");
       console.log(videoCall);
 
-      if ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-      (!document.mozFullScreen && !document.webkitIsFullScreen)) {               // current working methods
+      if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+      (!document.mozFullScreen && !document.webkitIsFullScreen)) {     
         if (element.requestFullScreen) {
           element.requestFullScreen();
         } else if (element.mozRequestFullScreen) {
@@ -301,7 +322,12 @@ class OpenviduHangoutsReact extends Component {
 
   render() {
     var valueSessionId = this.state.valueSessionId;
-    var valueMuted = this.state.muted;
+    var valueAudio = true;
+    var valueVideo = true;
+    if(this.state.publisher!==undefined){
+      valueAudio = this.state.publisher.properties.publishAudio;
+      valueVideo = this.state.publisher.properties.publishVideo;
+    }
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
@@ -317,7 +343,7 @@ class OpenviduHangoutsReact extends Component {
           </Toolbar>
       </AppBar>
           <div id="buttons">
-              { valueMuted === false ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
+              { valueAudio === true ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
                                         <Mic style={{color: 'white'}} />
                                        </Button> 
             : <Button id="micbuttondisabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
@@ -326,12 +352,15 @@ class OpenviduHangoutsReact extends Component {
             <Button id="callendbutton" variant="fab" color="secondary" aria-label="callend" type="button" onClick={this.handleClick} value="LeaveSession">
               <CallEnd />
             </Button>
-            <Button id="cambutton" variant="fab" color="default" aria-label="videocam" onClick={this.muteCam}>
-              <Videocam style={{color: 'white'}}/>
-            </Button>
+              { valueVideo === true ? <Button id="cambuttonenabled" variant="fab" color="default" aria-label="videocam" onClick={this.muteCam}>
+                                        <Videocam style={{color: 'white'}}/>
+                                      </Button>
+            : <Button id="cambuttondisabled" variant="fab" color="default" aria-label="videocam" onClick={this.muteCam}>
+                <VideocamOff/>
+              </Button> }
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
-            <StreamComponent stream={this.state.mainVideoStream} isMuted={valueMuted}></StreamComponent>
+            <StreamComponent stream={this.state.mainVideoStream} isMuted={valueAudio}></StreamComponent>
           </div> : null }
           <div id= {"video-container"} >
           { /*this.state.localStream !== undefined ? <div className= {"stream-container"} >
