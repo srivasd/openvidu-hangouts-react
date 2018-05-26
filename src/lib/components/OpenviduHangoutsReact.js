@@ -154,6 +154,8 @@ class OpenviduHangoutsReact extends Component {
               mirror: false
             });
 
+            console.log(publisher);
+
             var streamInterval = setInterval(function(){
               that.setState({
                 publisher: publisher,
@@ -362,7 +364,18 @@ class OpenviduHangoutsReact extends Component {
   };
 
   handleClose = value => {
-    this.setState({ selectedValue: value, open: false });
+    this.setState({ selectedValue: value, open: false }, () => {
+      console.log(value); 
+      var publisherAux = this.state.publisher;
+      publisherAux.properties.videoSource = value;
+      this.setState({
+        publisher: publisherAux
+      }, () => {
+        console.log(this.state.publisher)
+      })
+      
+    });
+    
   };
 
   render() {
@@ -375,12 +388,11 @@ class OpenviduHangoutsReact extends Component {
       valueVideo = this.state.publisher.properties.publishVideo;
     }
     
-    
+    /*<Typography variant="subheading">Selected: {this.state.selectedValue}</Typography>*/
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
         <AppBar position="static" id="session-header">
-        <Typography variant="subheading">Selected: {this.state.selectedValue}</Typography>
           <Toolbar>
             <Typography variant="title" color="inherit" value={valueSessionId}> {valueSessionId} </Typography>
             <IconButton id="settingsbutton" color="inherit" aria-label="settings" onClick={this.handleClickOpen}>
