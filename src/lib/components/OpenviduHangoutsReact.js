@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './OpenviduHangoutsReact.css';
 import { OpenVidu } from 'openvidu-browser';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import StreamComponent from './StreamComponent.js';
+import SimpleDialog from './SimpleDialog.js';
 import Button from 'material-ui/Button';
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
@@ -13,8 +16,25 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
+import blue from 'material-ui/colors/blue';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 import axios from 'axios';
+
+const styles = {
+  avatar: {
+    backgroundColor: blue[100],
+    color: blue[600],
+  },
+};
+
+SimpleDialog.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onClose: PropTypes.func,
+  selectedValue: PropTypes.string,
+  devices: PropTypes.array
+};
+
+const SimpleDialogWrapped = withStyles(styles)(SimpleDialog);  
 
 
 class OpenviduHangoutsReact extends Component {
@@ -29,6 +49,9 @@ class OpenviduHangoutsReact extends Component {
                   mainVideoStream: undefined,
                   localStream: undefined,
                   remoteStreams: [],
+                  open: false,
+                  selectedValue: undefined,
+                  devices: null
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
@@ -70,6 +93,19 @@ class OpenviduHangoutsReact extends Component {
   joinSession() {
 
       this.OV = new OpenVidu();
+
+      if(this.OV !==undefined && this.OV!==null){
+        //console.log(this.OV.getDevices());
+        var promise1 = Promise.resolve(this.OV.getDevices());
+        var that3 = this;
+        promise1.then(function(value) {
+          console.log(value);
+          that3.setState({
+            devices: value
+          });
+
+        });
+      }
 
       this.setState({
         session: this.OV.initSession(),
@@ -319,21 +355,35 @@ class OpenviduHangoutsReact extends Component {
       }
     }
 
+  handleClickOpen = () => {
+    this.setState({
+      open: true,
+    });
+  };
+
+  handleClose = value => {
+    this.setState({ selectedValue: value, open: false });
+  };
+
   render() {
     var valueSessionId = this.state.valueSessionId;
     var valueAudio = true;
     var valueVideo = true;
+    var actualDevices = this.state.devices;
     if(this.state.publisher!==undefined){
       valueAudio = this.state.publisher.properties.publishAudio;
       valueVideo = this.state.publisher.properties.publishVideo;
     }
+    
+    
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
         <AppBar position="static" id="session-header">
+        <Typography variant="subheading">Selected: {this.state.selectedValue}</Typography>
           <Toolbar>
             <Typography variant="title" color="inherit" value={valueSessionId}> {valueSessionId} </Typography>
-            <IconButton id="settingsbutton" color="inherit" aria-label="settings">
+            <IconButton id="settingsbutton" color="inherit" aria-label="settings" onClick={this.handleClickOpen}>
               <Settings />
             </IconButton>
             <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree" onClick={this.fullscreen}>
@@ -341,6 +391,12 @@ class OpenviduHangoutsReact extends Component {
             </IconButton>
           </Toolbar>
       </AppBar>
+      <SimpleDialogWrapped
+          selectedValue={this.state.selectedValue}
+          open={this.state.open}
+          onClose={this.handleClose}
+          devices={actualDevices}
+        />
           <div id="buttons">
               { valueAudio === true ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
                                         <Mic style={{color: 'white'}} />
