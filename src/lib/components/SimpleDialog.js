@@ -9,30 +9,36 @@ import ListItemText from 'material-ui/List/ListItemText';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import Dialog from 'material-ui/Dialog';
 import Videocam from '@material-ui/icons/Videocam';
+import Mic from '@material-ui/icons/Mic';
 
 class SimpleDialog extends React.Component {
 
     state= {
-        devices: this.props.devices
+        camdevices: this.props.devices,
+        micdevices: this.props.devices
     }
     handleClose = () => {
         this.props.onClose(this.props.selectedValue);
     };
 
     handleListItemClick = value => {
-        this.props.onClose(value.label);
+        this.props.onClose(value.label+"/"+value.kind);
     };
 
   componentWillReceiveProps(nextProps) {
-      var devicesAux = [];
+      var camdevicesAux = [];
+      var micdevicesAux = [];
       var i;
       for (i = 0; i < nextProps.devices.length; i++) { 
         if(nextProps.devices[i].kind === "videoinput") {
-            devicesAux.push(nextProps.devices[i]);
+            camdevicesAux.push(nextProps.devices[i]);
+        } else {
+            micdevicesAux.push(nextProps.devices[i]);
         }
       }
       this.setState({
-        devices: devicesAux
+        camdevices: camdevicesAux,
+        micdevices: micdevicesAux
       });
   }
 
@@ -44,19 +50,36 @@ class SimpleDialog extends React.Component {
       <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
         <DialogTitle id="simple-dialog-title">Set your cam device</DialogTitle>
         <div>
-            { this.state.devices !== null ?
+            { this.state.camdevices !== null ?
           <List>
-            {this.state.devices.map(device => (
-              <ListItem button onClick={() => this.handleListItemClick(device)} key={device.deviceId}>
+            {this.state.camdevices.map(camdevice => (
+              <ListItem button onClick={() => this.handleListItemClick(camdevice)} key={camdevice.deviceId}>
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
                     <Videocam />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={device.label} />
+                <ListItemText primary={camdevice.label} />
               </ListItem>
             ))}
           </List>
+
+          : null }
+          <DialogTitle id="simple-dialog-title">Set your mic device</DialogTitle>
+          { this.state.micdevices !== null ?
+          <List>
+            {this.state.micdevices.map(micdevice => (
+              <ListItem button onClick={() => this.handleListItemClick(micdevice)} key={micdevice.deviceId}>
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar}>
+                    <Mic />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={micdevice.label} />
+              </ListItem>
+            ))}
+          </List>
+          
           : null }
         </div>
       </Dialog>

@@ -366,8 +366,14 @@ class OpenviduHangoutsReact extends Component {
   handleClose = value => {
     this.setState({ selectedValue: value, open: false }, () => {
       console.log(value); 
+      var deviceName = value.split("/")[0];
+      var deviceType = value.split("/")[1];
       var publisherAux = this.state.publisher;
-      publisherAux.properties.videoSource = value;
+      if(deviceType === "videoinput"){
+        publisherAux.properties.videoSource = deviceName;
+      } else {
+        publisherAux.properties.audioSource = deviceName;
+      }
       this.setState({
         publisher: publisherAux
       }, () => {
