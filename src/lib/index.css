@@ -159,6 +159,18 @@ video {
 	margin-right:auto;
 }
 
+#chatbuttondiv {
+	z-index: 50;
+	position: absolute;
+	left: 0;
+	top: 72%;
+}
+
+#chatbutton {
+	background: rgb(56,56,56);
+	min-height: 50px;
+}
+
 #micbuttonenabled {
 	margin-right: 25px;
 	background: rgba(0, 0, 0, 0.5);
