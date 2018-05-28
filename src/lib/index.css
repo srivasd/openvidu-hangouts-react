@@ -78,6 +78,10 @@ video {
 	height: auto;
 }
 
+#main-video {
+	position: relative;
+}
+
 #main-video video {
 	cursor: initial;
 }

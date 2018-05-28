@@ -419,6 +419,12 @@ class OpenviduHangoutsReact extends Component {
           onClose={this.handleClose}
           devices={actualDevices}
         />
+          <div id="chatbuttondiv">
+          <Button id="chatbutton" variant="raised" size="small">
+            <Chat style={{color: 'white'}}/>
+          </Button>
+          </div>
+          { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
           <div id="buttons">
               { valueAudio === true ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
                                         <Mic style={{color: 'white'}} />
@@ -436,22 +442,16 @@ class OpenviduHangoutsReact extends Component {
                 <VideocamOff/>
               </Button> }
           </div>
-          <div id="chatbuttondiv">
-          <Button id="chatbutton" variant="raised" size="small">
-            <Chat style={{color: 'white'}}/>
-          </Button>
-          </div>
-          { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
             <StreamComponent stream={this.state.mainVideoStream}></StreamComponent>
+            <div id= {"video-container"} >
+              { this.state.localStream !== undefined ? <div className= {"stream-container"} >
+                <StreamComponent stream={this.state.localStream} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
+                </div> : null }
+              { this.state.remoteStreams.map((s, i) => <div key={i} className= {"stream-container"} >
+                <StreamComponent stream={s} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
+              </div>) }
+            </div>
           </div> : null }
-          <div id= {"video-container"} >
-          { /*this.state.localStream !== undefined ? <div className= {"stream-container"} >
-              <StreamComponent stream={this.state.localStream} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
-        </div> : null */}
-          { this.state.remoteStreams.map((s, i) => <div key={i} className= {"stream-container"} >
-              <StreamComponent stream={s} mainVideoStream={this.handleMainVideoStream}></StreamComponent>
-            </div>) }
-          </div>
         </div> : null }
         </div>
       ); 
