@@ -18,8 +18,6 @@ import MicOff from '@material-ui/icons/MicOff'
 import Videocam from '@material-ui/icons/Videocam';
 import blue from 'material-ui/colors/blue';
 import VideocamOff from '@material-ui/icons/VideocamOff';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
 import axios from 'axios';
 import Chat from '@material-ui/icons/Chat';
 
@@ -53,7 +51,6 @@ class OpenviduHangoutsReact extends Component {
                   localStream: undefined,
                   remoteStreams: [],
                   open: false,
-                  left: false,
                   selectedValue: undefined,
                   devices: null
                  };
@@ -66,11 +63,6 @@ class OpenviduHangoutsReact extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
   }
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    });
-  };
 
   handleSubmit(event){
     event.preventDefault();
@@ -407,15 +399,6 @@ class OpenviduHangoutsReact extends Component {
       valueVideo = this.state.publisher.properties.publishVideo;
     }
 
-    const sideList = (
-      <div>
-        <p>Hola</p>
-        <Divider />
-        <p>Hola</p>
-      </div>
-    );
-    
-    /*<Typography variant="subheading">Selected: {this.state.selectedValue}</Typography>*/
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
@@ -454,21 +437,11 @@ class OpenviduHangoutsReact extends Component {
               </Button> }
           </div>
           <div id="chatbuttondiv">
-          <Button id="chatbutton" onClick={this.toggleDrawer('left', true)} variant="raised" size="small">
+          <Button id="chatbutton" variant="raised" size="small">
             <Chat style={{color: 'white'}}/>
           </Button>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
-              <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
-              <div
-                tabIndex={0}
-                role="button"
-                onClick={this.toggleDrawer('left', false)}
-                onKeyDown={this.toggleDrawer('left', false)}
-              >
-                {sideList}
-              </div>
-            </Drawer>
             <StreamComponent stream={this.state.mainVideoStream}></StreamComponent>
           </div> : null }
           <div id= {"video-container"} >
