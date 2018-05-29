@@ -20,6 +20,9 @@ import blue from 'material-ui/colors/blue';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 import axios from 'axios';
 import Chat from '@material-ui/icons/Chat';
+import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import Send from '@material-ui/icons/Send';
 
 const styles = {
   avatar: {
@@ -52,7 +55,9 @@ class OpenviduHangoutsReact extends Component {
                   remoteStreams: [],
                   open: false,
                   selectedValue: undefined,
-                  devices: null
+                  devices: null,
+                  fullscreen: false,
+                  valueMessage: undefined
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
@@ -63,6 +68,28 @@ class OpenviduHangoutsReact extends Component {
     this.openNav = this.openNav.bind(this);
     this.closeNav = this.closeNav.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  sendMessage() {
+    var sessionAux = this.state.session;
+    sessionAux.signal({
+      data: this.state.valueMessage,  // Any string (optional)
+      to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+      type: 'my-chat'             // The type of message (optional)
+    })
+    .then(() => {
+        console.log('Message successfully sent');
+    })
+    .catch(error => {
+        console.error(error);
+    });
+  }
+
+  handleSendMessage(e){
+    this.setState({
+      valueMessage : e.target.value,
+    });
   }
 
 
@@ -131,6 +158,17 @@ class OpenviduHangoutsReact extends Component {
 
           mySession.subscribe(event.stream, undefined);
 
+        });
+
+        mySession.on('signal:my-chat', (event) => {
+          console.log(event.data); // Message
+          var ul = document.getElementById('messageslist');
+          var str = event.from.data;
+          var res = str.split(":")[1];
+          var username = res.split("\"")[1];
+          ul.innerHTML += '<li>'+ username + ": " + event.data + '</li>';
+          console.log(event.from); // Connection object of the sender
+          console.log(event.type); // The type of message ("my-chat")
         });
 
 
@@ -204,7 +242,7 @@ class OpenviduHangoutsReact extends Component {
           return result["id"];
         })
         .catch((error) => {
-          console.log(error.response);
+          console.log(error);
           if (error.response.status === 409) {
             resolve(sessionId);
             return sessionId;
@@ -333,6 +371,16 @@ class OpenviduHangoutsReact extends Component {
 
     fullscreen(){
       console.log("Fullscreen");
+
+      if(this.state.fullscreen === false) {
+        this.setState({
+          fullscreen: true
+        });
+      } else {
+        this.setState({
+          fullscreen: false
+        });
+      }
       
       var element = document.getElementById("videoCallId");
 
@@ -348,7 +396,7 @@ class OpenviduHangoutsReact extends Component {
         } else if (element.webkitRequestFullScreen) {
           element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
         }
-        videoCall[0].style.width = '70.75%';
+        //videoCall[0].style.width = '70.75%';
 
       } else {
         if (document.cancelFullScreen) {
@@ -358,7 +406,7 @@ class OpenviduHangoutsReact extends Component {
         } else if (document.webkitCancelFullScreen) {
           document.webkitCancelFullScreen();
         }
-        videoCall[0].style.width = '50%';
+        //videoCall[0].style.width = '50%';
       }
     }
 
@@ -396,14 +444,16 @@ class OpenviduHangoutsReact extends Component {
   openNav() {
     console.log(document.getElementById("main-video").offsetHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
-    document.getElementById("mySidenav").style.width = "30%";
-    document.getElementById("main-video").style.width = "70%";
+    document.getElementById("mySidenav").style.width = "40%";
+    document.getElementById("main-video").style.width = "60%";
     console.log(document.getElementById("mySidenav").style.height);
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
     document.getElementById("main-video").style.cssFloat = "right";
     document.getElementById("main-video").style.backgroundColor = "black";
     document.getElementById("chatbuttondiv").style.transition = "0.1s";
     document.getElementById("chatbuttondiv").style.visibility = "hidden";
+    document.getElementById("buttons").style.top = "60%";
+    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "25%";
   }
 
   closeNav() {
@@ -412,6 +462,9 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("chatbuttondiv").style.transition = "0.1s";
     document.getElementById("chatbuttondiv").style.visibility = "visible";
     document.getElementById("main-video").style.backgroundColor = "white";
+    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "0%";
+    document.getElementById("buttons").style.top = "70%";
+    document.getElementById("mySidenav").style.height = document.getElementById("videoCallId").offsetHeight + "px";
   }
 
   render() {
@@ -423,8 +476,12 @@ class OpenviduHangoutsReact extends Component {
       valueAudio = this.state.publisher.properties.publishAudio;
       valueVideo = this.state.publisher.properties.publishVideo;
     }
+    var lengthValueMessage = 0;
 
-    
+    if(this.state.valueMessage !== undefined){
+      lengthValueMessage = this.state.valueMessage.length;
+      console.log(this.state.valueMessage.length)
+    }
 
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
@@ -447,11 +504,16 @@ class OpenviduHangoutsReact extends Component {
               devices={actualDevices}
             />   
           <div id={"mySidenav"} className={"sidenav"}>
-            <a href="javascript:void(0)" className={"closebtn"} onClick={this.closeNav}>&times;</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
+            <ul id={"messageslist"}>
+            </ul>
+            <div id = "sendmessage">
+              <Divider/>
+              <a href="javascript:void(0)" className={"closebtn"} onClick={this.closeNav}>&times;</a>
+              <TextField className="form-control" type="text" label="message" id="message" placeholder={"Send a message"} onChange={this.handleSendMessage.bind(this)} required />
+              <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage}>
+                  { lengthValueMessage > 0 ? <Send style={{color: '#3f51b5'}}/> : <Send style={{color: 'white'}}/>}
+              </IconButton>
+            </div>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
           <div id="chatbuttondiv">
