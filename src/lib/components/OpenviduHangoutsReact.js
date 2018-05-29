@@ -60,6 +60,8 @@ class OpenviduHangoutsReact extends Component {
     this.muteCam = this.muteCam.bind(this);
     this.fullscreen = this.fullscreen.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
+    this.openNav = this.openNav.bind(this);
+    this.closeNav = this.closeNav.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
   }
 
@@ -202,6 +204,7 @@ class OpenviduHangoutsReact extends Component {
           return result["id"];
         })
         .catch((error) => {
+          console.log(error.response);
           if (error.response.status === 409) {
             resolve(sessionId);
             return sessionId;
@@ -346,6 +349,7 @@ class OpenviduHangoutsReact extends Component {
           element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
         }
         videoCall[0].style.width = '70.75%';
+
       } else {
         if (document.cancelFullScreen) {
           document.cancelFullScreen();
@@ -389,6 +393,27 @@ class OpenviduHangoutsReact extends Component {
     
   };
 
+  openNav() {
+    console.log(document.getElementById("main-video").offsetHeight);
+    document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
+    document.getElementById("mySidenav").style.width = "30%";
+    document.getElementById("main-video").style.width = "70%";
+    console.log(document.getElementById("mySidenav").style.height);
+    document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
+    document.getElementById("main-video").style.cssFloat = "right";
+    document.getElementById("main-video").style.backgroundColor = "black";
+    document.getElementById("chatbuttondiv").style.transition = "0.1s";
+    document.getElementById("chatbuttondiv").style.visibility = "hidden";
+  }
+
+  closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main-video").style.width = "100%";
+    document.getElementById("chatbuttondiv").style.transition = "0.1s";
+    document.getElementById("chatbuttondiv").style.visibility = "visible";
+    document.getElementById("main-video").style.backgroundColor = "white";
+  }
+
   render() {
     var valueSessionId = this.state.valueSessionId;
     var valueAudio = true;
@@ -399,32 +424,41 @@ class OpenviduHangoutsReact extends Component {
       valueVideo = this.state.publisher.properties.publishVideo;
     }
 
+    
+
       return (
         <div id = {"videoCallId"} className = {"videoCall"}>
         { this.state.session !== undefined ? <div id="session">
-        <AppBar position="static" id="session-header">
-          <Toolbar>
-            <Typography variant="title" color="inherit" value={valueSessionId}> {valueSessionId} </Typography>
-            <IconButton id="settingsbutton" color="inherit" aria-label="settings" onClick={this.handleClickOpen}>
-              <Settings />
-            </IconButton>
-            <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree" onClick={this.fullscreen}>
-              <CropFree />
-            </IconButton>
-          </Toolbar>
-      </AppBar>
-      <SimpleDialogWrapped
-          selectedValue={this.state.selectedValue}
-          open={this.state.open}
-          onClose={this.handleClose}
-          devices={actualDevices}
-        />
+          <AppBar position="static" id="session-header">
+              <Toolbar>
+                <Typography variant="title" color="inherit" value={valueSessionId}> {valueSessionId} </Typography>
+                <IconButton id="settingsbutton" color="inherit" aria-label="settings" onClick={this.handleClickOpen}>
+                  <Settings />
+                </IconButton>
+                <IconButton id="cropfreebutton" color="inherit" aria-label="cropfree" onClick={this.fullscreen}>
+                  <CropFree />
+                </IconButton>
+              </Toolbar>
+          </AppBar>
+          <SimpleDialogWrapped
+              selectedValue={this.state.selectedValue}
+              open={this.state.open}
+              onClose={this.handleClose}
+              devices={actualDevices}
+            />   
+          <div id={"mySidenav"} className={"sidenav"}>
+            <a href="javascript:void(0)" className={"closebtn"} onClick={this.closeNav}>&times;</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+          </div>
+          { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
           <div id="chatbuttondiv">
-          <Button id="chatbutton" variant="raised" size="small">
+          <Button id="chatbutton" variant="raised" size="small" onClick={this.openNav}>
             <Chat style={{color: 'white'}}/>
           </Button>
           </div>
-          { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
           <div id="buttons">
               { valueAudio === true ? <Button id="micbuttonenabled" variant="fab" color="default" aria-label="mic" onClick={this.muteMic}>
                                         <Mic style={{color: 'white'}} />
