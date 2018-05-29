@@ -93,7 +93,7 @@ class OpenviduHangoutsReact extends Component {
   }
 
   scrollToBottom() {
-    if(this.messagesEnd !== null){
+    if(this.messagesEnd !== null && this.messagesEnd !== undefined){
       this.messagesEnd.scrollIntoView({behaviour: "smooth"});
     }
   }
