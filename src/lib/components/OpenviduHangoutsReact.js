@@ -23,6 +23,8 @@ import Chat from '@material-ui/icons/Chat';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Send from '@material-ui/icons/Send';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const styles = {
   avatar: {
@@ -30,6 +32,24 @@ const styles = {
     color: blue[600],
   },
 };
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      light: '#00BFA5',
+      main: '#00BFA5',
+      dark: '#00BFA5',
+      contrastText: '#FAFAFA',
+    },
+    secondary: {
+      light: '#00BFA5',
+      main: '#00BFA5',
+      dark: '#00BFA5',
+      contrastText: '#FAFAFA',
+    },
+  },
+});
 
 SimpleDialog.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -72,6 +92,8 @@ class OpenviduHangoutsReact extends Component {
   }
 
   sendMessage() {
+    
+    document.getElementById("message").value = "";
     var sessionAux = this.state.session;
     sessionAux.signal({
       data: this.state.valueMessage,  // Any string (optional)
@@ -80,6 +102,9 @@ class OpenviduHangoutsReact extends Component {
     })
     .then(() => {
         console.log('Message successfully sent');
+        this.setState({
+          valueMessage: ""
+        });
     })
     .catch(error => {
         console.error(error);
@@ -162,13 +187,20 @@ class OpenviduHangoutsReact extends Component {
 
         mySession.on('signal:my-chat', (event) => {
           console.log(event.data); // Message
+          console.log(event.from); // Connection object of the sender
+          console.log(event.type); // The type of message ("my-chat")
           var ul = document.getElementById('messageslist');
           var str = event.from.data;
           var res = str.split(":")[1];
           var username = res.split("\"")[1];
-          ul.innerHTML += '<li>'+ username + ": " + event.data + '</li>';
-          console.log(event.from); // Connection object of the sender
-          console.log(event.type); // The type of message ("my-chat")
+
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          if(minutes < 10){
+            minutes = "0"+minutes;
+          }
+          ul.innerHTML += '<li class="messageelement"><div class="usernameinformation"><span class="username">' + username + ": " + event.data + "</span></div><span class=\"hour\">" + hours + ":" + minutes + '</span></li>';
         });
 
 
@@ -467,6 +499,8 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("mySidenav").style.height = document.getElementById("videoCallId").offsetHeight + "px";
   }
 
+  
+
   render() {
     var valueSessionId = this.state.valueSessionId;
     var valueAudio = true;
@@ -506,14 +540,19 @@ class OpenviduHangoutsReact extends Component {
           <div id={"mySidenav"} className={"sidenav"}>
             <ul id={"messageslist"}>
             </ul>
+            <MuiThemeProvider theme = {theme}>
             <div id = "sendmessage">
               <Divider/>
-              <a href="javascript:void(0)" className={"closebtn"} onClick={this.closeNav}>&times;</a>
-              <TextField className="form-control" type="text" label="message" id="message" placeholder={"Send a message"} onChange={this.handleSendMessage.bind(this)} required />
-              <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage}>
-                  { lengthValueMessage > 0 ? <Send style={{color: '#3f51b5'}}/> : <Send style={{color: 'white'}}/>}
-              </IconButton>
+              <Button className={"closebtn"} onClick={this.closeNav}><ArrowBack style={{color: 'white', fontSize: "26px"}}/></Button>
+              <TextField className="form-control" type="text" id="message" placeholder={"Send a message"} InputProps={{color: 'white'}} onChange={this.handleSendMessage.bind(this)} required />
+              { lengthValueMessage > 0 ? <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage}>
+                  <Send style={{color: '#00BFA5'}}/>
+              </IconButton> :
+              <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage} disabled>
+                  <Send style={{color: 'grey'}}/>
+              </IconButton> }
             </div>
+            </MuiThemeProvider>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
           <div id="chatbuttondiv">

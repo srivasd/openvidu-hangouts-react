@@ -231,7 +231,7 @@ div#main-video .streamcomponent div{
     z-index: 0;
     top: 0;
     left: 0;
-    background-color: #111;
+    background: #212121;
     overflow-x: hidden;
     transition: 0.2s;
 	margin-top: 64px; 
@@ -251,11 +251,7 @@ div#main-video .streamcomponent div{
 }
 
 .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
     font-size: 36px;
-    margin-left: 50px;
 }
 
 @media screen and (max-height: 450px) {
@@ -264,11 +260,44 @@ div#main-video .streamcomponent div{
 }
 
 #sendmessage {
-	position: absolute;
-	bottom: 1%;
-	left: 10%
+	display: flex;
+	flex-direction: row;
+	border-top: 1px solid rgba(255,255,255,0.12);
 }
 
 #messageslist {
-	color: white;
+	list-style: none;
+	margin: 20px 0px;
+	padding: 0px 30px;
+}
+
+.messageelement {
+	display: flex;
+	flex-direction: row;
+	font-size: 14px;
+	margin: 7px 0 7px 0px;
+}
+
+.usernameinformation {
+	flex: 1;
+	margin-right: 10px;
+	color: rgba(255,255,255,0.70);
+	word-break: break-word;
+}
+
+.username {
+	color: #fff;
+	margin-right: 6px;
+}
+
+.hour {
+	color: rgba(255,255,255,0.30);
+}
+
+#message {
+	margin-top: 8px;
+}
+
+#sendbutton {
+	margin-left: 15px;
 }
