@@ -89,10 +89,21 @@ class OpenviduHangoutsReact extends Component {
     this.closeNav = this.closeNav.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  scrollToBottom() {
+    if(this.messagesEnd !== null){
+      this.messagesEnd.scrollIntoView({behaviour: "smooth"});
+    }
+  }
+
+  componentDidUpdate(){
+    this.scrollToBottom();
   }
 
   sendMessage() {
-    
+    this.scrollToBottom();
     document.getElementById("message").value = "";
     var sessionAux = this.state.session;
     sessionAux.signal({
@@ -354,6 +365,7 @@ class OpenviduHangoutsReact extends Component {
     };
 
     componentDidMount(){
+      this.scrollToBottom();
       window.addEventListener("beforeunload", this.onbeforeunload);
     }
 
@@ -476,8 +488,8 @@ class OpenviduHangoutsReact extends Component {
   openNav() {
     console.log(document.getElementById("main-video").offsetHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
-    document.getElementById("mySidenav").style.width = "40%";
-    document.getElementById("main-video").style.width = "60%";
+    document.getElementById("mySidenav").style.width = "35%";
+    document.getElementById("main-video").style.width = "65%";
     console.log(document.getElementById("mySidenav").style.height);
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
     document.getElementById("main-video").style.cssFloat = "right";
@@ -485,7 +497,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("chatbuttondiv").style.transition = "0.1s";
     document.getElementById("chatbuttondiv").style.visibility = "hidden";
     document.getElementById("buttons").style.top = "60%";
-    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "25%";
+    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "22%";
   }
 
   closeNav() {
@@ -541,7 +553,7 @@ class OpenviduHangoutsReact extends Component {
             <ul id={"messageslist"}>
             </ul>
             <MuiThemeProvider theme = {theme}>
-            <div id = "sendmessage">
+            <div id = "sendmessage" ref={(el) => { this.messagesEnd = el; }}>
               <Divider/>
               <Button className={"closebtn"} onClick={this.closeNav}><ArrowBack style={{color: 'white', fontSize: "26px"}}/></Button>
               <TextField className="form-control" type="text" id="message" placeholder={"Send a message"} InputProps={{color: 'white'}} onChange={this.handleSendMessage.bind(this)} required />
