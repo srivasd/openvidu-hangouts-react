@@ -453,6 +453,8 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingLeft = "5%";
         document.getElementById("sendmessage").style.paddingRight = "5%";
         document.getElementById("video-container").style.fontSize = "12px";
+        document.getElementById("settingsbutton").style.display = "none";
+
 
 
       } else {
@@ -469,6 +471,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
         document.getElementById("video-container").style.fontSize = "10px";
+        document.getElementById("settingsbutton").style.display = "initial";
 
       }
     }
@@ -505,11 +508,9 @@ class OpenviduHangoutsReact extends Component {
   };
 
   openNav() {
-    //console.log(document.getElementById("main-video").offsetHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
     document.getElementById("main-video").style.width = "65%";
-    //console.log(document.getElementById("mySidenav").style.height);
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
     document.getElementById("main-video").style.cssFloat = "right";
     document.getElementById("main-video").style.backgroundColor = "black";
