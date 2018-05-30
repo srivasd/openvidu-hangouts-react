@@ -1,6 +1,6 @@
 {
   "name": "openvidu-hangouts-react",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": " React NPM library starter kit based on Facebook's create react app",
   "main": "build/index.js",
   "scripts": {
@@ -22,11 +22,9 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.0.0-beta.43",
-    "material-design-icons": "^3.0.1",
     "typeface-roboto": "0.0.54"
   },
   "devDependencies": {
-    "@material-ui/icons": "^1.0.0-beta.43",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.0",
@@ -52,7 +50,6 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
-    "material-ui": "^1.0.0-beta.44",
     "object-assign": "4.1.1",
     "openvidu-browser": "^2.0.0",
     "postcss-flexbugs-fixes": "3.2.0",

@@ -4,9 +4,6 @@ html {
 	font-family: 'Roboto';
 }
 
-#main-container {
-}
-
 .videoCall {
 	width: 50%;
 	margin: 0 auto;
@@ -53,9 +50,6 @@ input#join-button {
 
 #join-dialog input.btn {
 	margin-top: 15px;
-}
-
-#session-header {
 }
 
 #session-title {
@@ -189,8 +183,6 @@ video {
 	background: rgba(0, 0, 0, 0.5);
 }
 
-#cambuttondisabled {
-}
 
 #callendbutton {
 	margin-right: 25px;
