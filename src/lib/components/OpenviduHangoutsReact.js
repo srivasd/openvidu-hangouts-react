@@ -452,6 +452,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
         document.getElementById("sendmessage").style.paddingLeft = "5%";
         document.getElementById("sendmessage").style.paddingRight = "5%";
+        document.getElementById("video-container").style.fontSize = "12px";
 
 
       } else {
@@ -467,6 +468,8 @@ class OpenviduHangoutsReact extends Component {
         videoCall[0].style.width = '50%';
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
+        document.getElementById("video-container").style.fontSize = "10px";
+
       }
     }
 
