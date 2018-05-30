@@ -1,13 +1,13 @@
 /* eslint-disable react/no-multi-comp */
 
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
-import List from 'material-ui/List';
-import ListItem from 'material-ui/List/ListItem';
-import ListItemAvatar from 'material-ui/List/ListItemAvatar';
-import ListItemText from 'material-ui/List/ListItemText';
-import DialogTitle from 'material-ui/Dialog/DialogTitle';
-import Dialog from 'material-ui/Dialog';
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 import Videocam from '@material-ui/icons/Videocam';
 import Mic from '@material-ui/icons/Mic';
 
