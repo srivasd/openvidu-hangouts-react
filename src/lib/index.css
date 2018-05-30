@@ -173,6 +173,7 @@ video {
 #chatbutton {
 	background: rgb(56,56,56);
 	min-height: 50px;
+	width: 50px;
 }
 
 #micbuttonenabled {
