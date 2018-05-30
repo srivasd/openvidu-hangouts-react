@@ -77,7 +77,8 @@ class OpenviduHangoutsReact extends Component {
                   selectedValue: undefined,
                   devices: null,
                   fullscreen: false,
-                  valueMessage: undefined
+                  valueMessage: undefined,
+                  initialStyle: true
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
@@ -415,6 +416,11 @@ class OpenviduHangoutsReact extends Component {
 
     fullscreen(){
       console.log("Fullscreen");
+      if(this.state.initialStyle === true) {
+        this.setState({
+          initialStyle: document.getElementById("main-video").offsetHeight + "px",
+        });
+      }
 
       if(this.state.fullscreen === false) {
         this.setState({
@@ -440,7 +446,13 @@ class OpenviduHangoutsReact extends Component {
         } else if (element.webkitRequestFullScreen) {
           element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
         }
-        //videoCall[0].style.width = '70.75%';
+        console.log(window.screen.height);
+        videoCall[0].style.width = '70.75%';
+        document.getElementById("mySidenav").style.height = (window.screen.height - 57) + "px";
+        document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
+        document.getElementById("sendmessage").style.paddingLeft = "5%";
+        document.getElementById("sendmessage").style.paddingRight = "5%";
+
 
       } else {
         if (document.cancelFullScreen) {
@@ -450,7 +462,11 @@ class OpenviduHangoutsReact extends Component {
         } else if (document.webkitCancelFullScreen) {
           document.webkitCancelFullScreen();
         }
-        //videoCall[0].style.width = '50%';
+        document.getElementById("mySidenav").style.height = this.state.initialStyle;
+        document.getElementById("main-video").style.height = this.state.initialStyle;
+        videoCall[0].style.width = '50%';
+        document.getElementById("sendmessage").style.paddingLeft = "0%";
+        document.getElementById("sendmessage").style.paddingRight = "0%";
       }
     }
 
@@ -486,11 +502,11 @@ class OpenviduHangoutsReact extends Component {
   };
 
   openNav() {
-    console.log(document.getElementById("main-video").offsetHeight);
+    //console.log(document.getElementById("main-video").offsetHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
     document.getElementById("main-video").style.width = "65%";
-    console.log(document.getElementById("mySidenav").style.height);
+    //console.log(document.getElementById("mySidenav").style.height);
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
     document.getElementById("main-video").style.cssFloat = "right";
     document.getElementById("main-video").style.backgroundColor = "black";
@@ -498,6 +514,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("chatbuttondiv").style.visibility = "hidden";
     document.getElementById("buttons").style.top = "60%";
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "22%";
+
   }
 
   closeNav() {
@@ -508,7 +525,8 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("main-video").style.backgroundColor = "white";
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "0%";
     document.getElementById("buttons").style.top = "70%";
-    document.getElementById("mySidenav").style.height = document.getElementById("videoCallId").offsetHeight + "px";
+    document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
+    document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
   }
 
   
@@ -555,7 +573,7 @@ class OpenviduHangoutsReact extends Component {
             <MuiThemeProvider theme = {theme}>
             <div id = "sendmessage" ref={(el) => { this.messagesEnd = el; }}>
               <Divider/>
-              <Button className={"closebtn"} onClick={this.closeNav}><ArrowBack style={{color: 'white', fontSize: "26px"}}/></Button>
+              <Button className={"closebtn"} size="small" onClick={this.closeNav}><ArrowBack style={{color: 'white', fontSize: "26px"}}/></Button>
               <TextField className="form-control" type="text" id="message" placeholder={"Send a message"} InputProps={{color: 'white'}} onChange={this.handleSendMessage.bind(this)} required />
               { lengthValueMessage > 0 ? <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage}>
                   <Send style={{color: '#00BFA5'}}/>
