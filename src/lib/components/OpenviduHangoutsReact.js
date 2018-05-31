@@ -78,7 +78,8 @@ class OpenviduHangoutsReact extends Component {
                   devices: null,
                   fullscreen: false,
                   valueMessage: undefined,
-                  initialStyle: true
+                  initialStyle: true,
+                  initialPercent: undefined
                  };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick  = this.handleClick.bind(this);
@@ -421,6 +422,23 @@ class OpenviduHangoutsReact extends Component {
           initialStyle: document.getElementById("main-video").offsetHeight + "px",
         });
       }
+      
+      var element = document.getElementById("videoCallId");
+
+      var videoCall = document.getElementsByClassName("videoCall");
+      console.log(videoCall);
+
+      if(this.state.fullscreen === false){
+        var previousWidth = videoCall[0].clientWidth;
+        console.log(previousWidth);
+        console.log(document.documentElement.clientWidth);
+        var previousPercent = previousWidth / document.documentElement.clientWidth;
+        previousPercent = previousPercent * 100;
+        this.setState({
+          initialPercent: previousPercent
+        });
+        console.log(previousPercent);
+      }
 
       if(this.state.fullscreen === false) {
         this.setState({
@@ -432,10 +450,6 @@ class OpenviduHangoutsReact extends Component {
         });
       }
       
-      var element = document.getElementById("videoCallId");
-
-      var videoCall = document.getElementsByClassName("videoCall");
-      console.log(videoCall);
 
       if ((document.fullScreenElement && document.fullScreenElement !== null) ||
       (!document.mozFullScreen && !document.webkitIsFullScreen)) {     
@@ -446,7 +460,11 @@ class OpenviduHangoutsReact extends Component {
         } else if (element.webkitRequestFullScreen) {
           element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
         }
-        console.log(window.screen.height);
+
+        this.setState({
+          initialStyle: document.getElementById("main-video").clientHeight + "px"
+        })
+
         videoCall[0].style.width = '70.75%';
         document.getElementById("mySidenav").style.height = (window.screen.height - 57) + "px";
         document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
@@ -465,9 +483,11 @@ class OpenviduHangoutsReact extends Component {
         } else if (document.webkitCancelFullScreen) {
           document.webkitCancelFullScreen();
         }
+        console.log(previousWidth);
         document.getElementById("mySidenav").style.height = this.state.initialStyle;
         document.getElementById("main-video").style.height = this.state.initialStyle;
-        videoCall[0].style.width = '50%';
+        console.log(this.state.initialPercent + '%');
+        videoCall[0].style.width = this.state.initialPercent + '%';
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
         document.getElementById("video-container").style.fontSize = "10px";
@@ -508,7 +528,9 @@ class OpenviduHangoutsReact extends Component {
   };
 
   openNav() {
-    document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
+    //console.log(document.getElementById("main-video").offsetHeight);
+    console.log(document.getElementById("main-video").clientHeight);
+    document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
     document.getElementById("main-video").style.width = "65%";
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
@@ -517,7 +539,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("chatbuttondiv").style.transition = "0.1s";
     document.getElementById("chatbuttondiv").style.visibility = "hidden";
     document.getElementById("buttons").style.top = "60%";
-    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "22%";
+    document.getElementsByClassName("streamcomponent")[0].style.marginTop = "17%";
 
   }
 
@@ -529,8 +551,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("main-video").style.backgroundColor = "white";
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "0%";
     document.getElementById("buttons").style.top = "70%";
-    document.getElementById("mySidenav").style.height = document.getElementById("main-video").offsetHeight + "px";
-    document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
+    document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
   }
 
   
