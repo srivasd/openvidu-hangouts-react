@@ -484,8 +484,8 @@ class OpenviduHangoutsReact extends Component {
           document.webkitCancelFullScreen();
         }
         console.log(previousWidth);
-        document.getElementById("mySidenav").style.height = this.state.initialStyle;
-        document.getElementById("main-video").style.height = this.state.initialStyle;
+        document.getElementById("main-video").style.height = "unset";
+        document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
         console.log(this.state.initialPercent + '%');
         videoCall[0].style.width = this.state.initialPercent + '%';
         document.getElementById("sendmessage").style.paddingLeft = "0%";
@@ -552,6 +552,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "0%";
     document.getElementById("buttons").style.top = "70%";
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
+    document.getElementById("main-video").style.height = "unset";
   }
 
   
