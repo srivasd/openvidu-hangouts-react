@@ -82,6 +82,8 @@ video {
 
 #session {
 	position: relative;
+	height: auto;
+	overflow: hidden;
 }
 
 #session img {

@@ -472,6 +472,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingRight = "5%";
         document.getElementById("video-container").style.fontSize = "12px";
         document.getElementById("settingsbutton").style.display = "none";
+        
 
       } else {
         if (document.cancelFullScreen) {
@@ -491,7 +492,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingRight = "0%";
         document.getElementById("video-container").style.fontSize = "10px";
         document.getElementById("settingsbutton").style.display = "initial";
-
+        document.getElementById("session").style.overflow = "initial";
       }
     }
 
@@ -529,6 +530,7 @@ class OpenviduHangoutsReact extends Component {
   openNav() {
     //console.log(document.getElementById("main-video").offsetHeight);
     //document.getElementById("main-video").style.height = "unset";
+    document.getElementById("session").style.overflow = "hidden";
     console.log(document.getElementById("main-video").clientHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
