@@ -51,6 +51,7 @@ In this demo you will see a use case of `openvidu-hangouts-react`, where you can
 
 ````
 import React, { Component } from 'react';
+import OpenviduReact from '../lib';
 import './App.css';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -60,8 +61,6 @@ import Button from '@material-ui/core/Button';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import OpenviduReact from 'openvidu-hangouts-react';
-import 'openvidu-hangouts-react/build/index.css';
 
   class App extends Component {
 
@@ -138,7 +137,9 @@ import 'openvidu-hangouts-react/build/index.css';
           </Card>
           </div>
         </div> : null }
+        <div id="videoCallContainer">
           <OpenviduReact updateLogin = {this.updateShowLogin} ref={this.child} wsUrl={"localhost"} sessionId={valueSessionId} participantId={valueUserName}/>
+        </div>
         </div>
       );
     }

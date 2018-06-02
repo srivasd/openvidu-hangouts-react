@@ -472,8 +472,9 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingRight = "5%";
         document.getElementById("video-container").style.fontSize = "12px";
         document.getElementById("settingsbutton").style.display = "none";
+        document.getElementById("sendmessage").style.maxWidth = "400px";
+        document.getElementById("sendmessage").style.margin = "0 auto";
         
-
       } else {
         if (document.cancelFullScreen) {
           document.cancelFullScreen();
@@ -493,6 +494,8 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("video-container").style.fontSize = "10px";
         document.getElementById("settingsbutton").style.display = "initial";
         document.getElementById("session").style.overflow = "initial";
+        document.getElementById("sendmessage").style.maxWidth = "unset";
+        document.getElementById("sendmessage").style.margin = "unset";
       }
     }
 
@@ -528,13 +531,15 @@ class OpenviduHangoutsReact extends Component {
   };
 
   openNav() {
-    //console.log(document.getElementById("main-video").offsetHeight);
-    //document.getElementById("main-video").style.height = "unset";
     document.getElementById("session").style.overflow = "hidden";
     console.log(document.getElementById("main-video").clientHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
     document.getElementById("main-video").style.width = "65%";
+    if(this.state.fullscreen === true) {
+      document.getElementById("mySidenav").style.width = "20%";
+      document.getElementById("main-video").style.width = "80%";
+    }
     document.getElementById("main-video").style.height = document.getElementById("mySidenav").style.height;
     document.getElementById("main-video").style.cssFloat = "right";
     document.getElementById("main-video").style.backgroundColor = "black";
@@ -543,7 +548,7 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("buttons").style.top = "60%";
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "17%";
     if(this.state.fullscreen === true) {
-      document.getElementsByClassName("streamcomponent")[0].style.marginTop = "3%";
+      document.getElementsByClassName("streamcomponent")[0].style.marginTop = "0%";
     }
 
   }
@@ -614,7 +619,7 @@ class OpenviduHangoutsReact extends Component {
               <IconButton id="sendbutton" color="inherit" aria-label="send" onClick= {this.sendMessage} disabled>
                   <Send style={{color: 'grey'}}/>
               </IconButton> }
-            </div>
+              </div>
             </MuiThemeProvider>
           </div>
           { this.state.mainVideoStream !== undefined ? <div id={"main-video"} >
