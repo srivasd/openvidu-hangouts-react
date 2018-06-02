@@ -85,7 +85,9 @@ import Typography from "@material-ui/core/Typography";
           </Card>
           </div>
         </div> : null }
+        <div id="videoCallContainer">
           <OpenviduReact updateLogin = {this.updateShowLogin} ref={this.child} wsUrl={"localhost"} sessionId={valueSessionId} participantId={valueUserName}/>
+        </div>
         </div>
       );
     }

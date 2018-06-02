@@ -425,11 +425,11 @@ class OpenviduHangoutsReact extends Component {
       
       var element = document.getElementById("videoCallId");
 
-      var videoCall = document.getElementsByClassName("videoCall");
+      var videoCall = document.getElementById("videoCallContainer");
       console.log(videoCall);
 
       if(this.state.fullscreen === false){
-        var previousWidth = videoCall[0].clientWidth;
+        var previousWidth = videoCall.clientWidth;
         console.log(previousWidth);
         console.log(document.documentElement.clientWidth);
         var previousPercent = previousWidth / document.documentElement.clientWidth;
@@ -465,7 +465,7 @@ class OpenviduHangoutsReact extends Component {
           initialStyle: document.getElementById("main-video").clientHeight + "px"
         })
         this.closeNav();
-        videoCall[0].style.width = '70.75%';
+        videoCall.style.width = '60.75%';
         document.getElementById("mySidenav").style.height = (window.screen.height - 57) + "px";
         document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
         document.getElementById("sendmessage").style.paddingLeft = "5%";
@@ -487,7 +487,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("main-video").style.height = "unset";
         document.getElementById("mySidenav").style.height = this.state.initialStyle;
         console.log(this.state.initialPercent + '%');
-        videoCall[0].style.width = this.state.initialPercent + '%';
+        videoCall.style.width = this.state.initialPercent + '%';
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
         document.getElementById("video-container").style.fontSize = "10px";
@@ -542,6 +542,9 @@ class OpenviduHangoutsReact extends Component {
     document.getElementById("chatbuttondiv").style.visibility = "hidden";
     document.getElementById("buttons").style.top = "60%";
     document.getElementsByClassName("streamcomponent")[0].style.marginTop = "17%";
+    if(this.state.fullscreen === true) {
+      document.getElementsByClassName("streamcomponent")[0].style.marginTop = "3%";
+    }
 
   }
 
