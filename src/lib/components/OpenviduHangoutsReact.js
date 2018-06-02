@@ -465,7 +465,7 @@ class OpenviduHangoutsReact extends Component {
           initialStyle: document.getElementById("main-video").clientHeight + "px"
         })
         this.closeNav();
-        videoCall.style.width = '60.75%';
+        videoCall.style.width = '70.75%';
         document.getElementById("mySidenav").style.height = (window.screen.height - 57) + "px";
         document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
         document.getElementById("sendmessage").style.paddingLeft = "5%";
