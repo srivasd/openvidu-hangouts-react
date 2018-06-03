@@ -167,7 +167,6 @@ class OpenviduHangoutsReact extends Component {
         var promise1 = Promise.resolve(this.OV.getDevices());
         var that3 = this;
         promise1.then(function(value) {
-          console.log(value);
           that3.setState({
             devices: value
           });
@@ -199,9 +198,6 @@ class OpenviduHangoutsReact extends Component {
         });
 
         mySession.on('signal:my-chat', (event) => {
-          console.log(event.data); // Message
-          console.log(event.from); // Connection object of the sender
-          console.log(event.type); // The type of message ("my-chat")
           var ul = document.getElementById('messageslist');
           var str = event.from.data;
           var res = str.split(":")[1];
@@ -240,8 +236,6 @@ class OpenviduHangoutsReact extends Component {
               mirror: false
             });
 
-            console.log(publisher);
-
             var streamInterval = setInterval(function(){
               that.setState({
                 publisher: publisher,
@@ -269,7 +263,6 @@ class OpenviduHangoutsReact extends Component {
 
     createSession(sessionId) {
       var OPENVIDU_SERVER_URL = "https://" + this.state.stateWsUrl + ":4443";
-      console.log(sessionId);
       return new Promise((resolve, reject) => {
         axios({
           method: 'post',
@@ -280,14 +273,11 @@ class OpenviduHangoutsReact extends Component {
             "Content-Type": "application/json"
           }
         }).then(response => {
-          console.log(response);
           var result = JSON.parse(response.request.response);
-          console.log(result["id"]);
           resolve(result["id"]);
           return result["id"];
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.status === 409) {
             resolve(sessionId);
             return sessionId;
@@ -305,7 +295,6 @@ class OpenviduHangoutsReact extends Component {
 
     createToken(sessionId) {
       var OPENVIDU_SERVER_URL = "https://" + this.state.stateWsUrl + ":4443";
-      console.log(sessionId);
       return new Promise((resolve, reject) => {
         axios({
           method: 'post',
@@ -316,11 +305,9 @@ class OpenviduHangoutsReact extends Component {
             "Content-Type": "application/json"
           }
         }).then((response) => {
-          console.log(response);
           resolve(response.data.token);
         })
         .catch((error) => {
-          console.log(error);
           reject(error);
         });
       });
@@ -388,14 +375,10 @@ class OpenviduHangoutsReact extends Component {
     muteMic(){
       if(this.state.publisher!==undefined){
         var actualPublisher = this.state.publisher;
-        console.log(actualPublisher.properties.publishAudio);
         actualPublisher.properties.publishAudio = !actualPublisher.properties.publishAudio;
         actualPublisher.publishAudio(actualPublisher.properties.publishAudio);
-        console.log(actualPublisher.properties.publishAudio);
         this.setState({
           publisher: actualPublisher
-        }, () => {
-          console.log(this.state.publisher);
         });
       }
     }
@@ -403,20 +386,15 @@ class OpenviduHangoutsReact extends Component {
     muteCam(){
       if(this.state.publisher!==undefined){
         var actualPublisher = this.state.publisher;
-        console.log(actualPublisher.properties.publishVideo);
         actualPublisher.properties.publishVideo = !actualPublisher.properties.publishVideo;
         actualPublisher.publishVideo(actualPublisher.properties.publishVideo);
-        console.log(actualPublisher.properties.publishVideo);
         this.setState({
           publisher: actualPublisher
-        }, () => {
-          console.log(this.state.publisher);
         });
       }
     }
 
     fullscreen(){
-      console.log("Fullscreen");
       if(this.state.initialStyle === true) {
         this.setState({
           initialStyle: document.getElementById("main-video").offsetHeight + "px",
@@ -426,18 +404,14 @@ class OpenviduHangoutsReact extends Component {
       var element = document.getElementById("videoCallId");
 
       var videoCall = document.getElementById("videoCallContainer");
-      console.log(videoCall);
 
       if(this.state.fullscreen === false){
         var previousWidth = videoCall.clientWidth;
-        console.log(previousWidth);
-        console.log(document.documentElement.clientWidth);
         var previousPercent = previousWidth / document.documentElement.clientWidth;
         previousPercent = previousPercent * 100;
         this.setState({
           initialPercent: previousPercent
         });
-        console.log(previousPercent);
       }
 
       if(this.state.fullscreen === false) {
@@ -465,12 +439,12 @@ class OpenviduHangoutsReact extends Component {
           initialStyle: document.getElementById("main-video").clientHeight + "px"
         })
         this.closeNav();
-        videoCall.style.width = '70.75%';
         document.getElementById("mySidenav").style.height = (window.screen.height - 57) + "px";
         document.getElementById("main-video").style.height = (window.screen.height - 57) + "px";
         document.getElementById("sendmessage").style.paddingLeft = "5%";
         document.getElementById("sendmessage").style.paddingRight = "5%";
         document.getElementById("video-container").style.fontSize = "12px";
+        document.getElementById("video-container").style.bottom = "15%";
         document.getElementById("settingsbutton").style.display = "none";
         document.getElementById("sendmessage").style.maxWidth = "400px";
         document.getElementById("sendmessage").style.margin = "0 auto";
@@ -484,10 +458,8 @@ class OpenviduHangoutsReact extends Component {
           document.webkitCancelFullScreen();
         }
         this.closeNav();
-        console.log(previousWidth);
         document.getElementById("main-video").style.height = "unset";
         document.getElementById("mySidenav").style.height = this.state.initialStyle;
-        console.log(this.state.initialPercent + '%');
         videoCall.style.width = this.state.initialPercent + '%';
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
@@ -507,7 +479,6 @@ class OpenviduHangoutsReact extends Component {
 
   handleClose = value => {
     this.setState({ selectedValue: value, open: false }, () => {
-      console.log(value); 
       var deviceName = undefined;
       var deviceType = undefined;
       if(value!==undefined){
@@ -522,8 +493,6 @@ class OpenviduHangoutsReact extends Component {
       }
       this.setState({
         publisher: publisherAux
-      }, () => {
-        console.log(this.state.publisher)
       })
       
     });
@@ -532,7 +501,6 @@ class OpenviduHangoutsReact extends Component {
 
   openNav() {
     document.getElementById("session").style.overflow = "hidden";
-    console.log(document.getElementById("main-video").clientHeight);
     document.getElementById("mySidenav").style.height = document.getElementById("main-video").clientHeight + "px";
     document.getElementById("mySidenav").style.width = "35%";
     document.getElementById("main-video").style.width = "65%";
@@ -582,7 +550,6 @@ class OpenviduHangoutsReact extends Component {
 
     if(this.state.valueMessage !== undefined){
       lengthValueMessage = this.state.valueMessage.length;
-      console.log(this.state.valueMessage.length)
     }
 
       return (
