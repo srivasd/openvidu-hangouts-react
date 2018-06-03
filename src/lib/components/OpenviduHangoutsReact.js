@@ -464,6 +464,7 @@ class OpenviduHangoutsReact extends Component {
         document.getElementById("sendmessage").style.paddingLeft = "0%";
         document.getElementById("sendmessage").style.paddingRight = "0%";
         document.getElementById("video-container").style.fontSize = "10px";
+        document.getElementById("video-container").style.bottom = "5%";
         document.getElementById("settingsbutton").style.display = "initial";
         document.getElementById("session").style.overflow = "initial";
         document.getElementById("sendmessage").style.maxWidth = "unset";
