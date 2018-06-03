@@ -4,7 +4,7 @@
 
 It's written in [JavaScript](https://www.javascript.com/).
 
-To be able to work in the browser, OpenviduReact uses [openvidu-browser][https://github.com/OpenVidu/openvidu/tree/master/openvidu-browser] to communicate with the [OpenVidu Server][https://github.com/OpenVidu/openvidu/tree/master/openvidu-server].
+To be able to work in the browser, OpenviduReact uses [openvidu-browser](https://github.com/OpenVidu/openvidu/tree/master/openvidu-browser) to communicate with the [OpenVidu Server](https://github.com/OpenVidu/openvidu/tree/master/openvidu-server).
 
 To use AngularOpenVidu, [WebRTC](https://en.wikipedia.org/wiki/WebRTC) support is required (Chrome, Firefox, Opera).
 
@@ -166,4 +166,4 @@ export default App;
 
 5. Deploy OpenVidu Server
 
-Follow the instructions in [this page](http://openvidu.io/docs/reference-docs/openvidu-artifacts/) to deploy it with docker.
+Follow the instructions in [this page](https://openvidu.io/docs/releases/) to deploy it with docker.
