@@ -52,8 +52,8 @@ class SimpleDialog extends React.Component {
         <div>
             { this.state.camdevices !== null ?
           <List>
-            {this.state.camdevices.map(camdevice => (
-              <ListItem button onClick={() => this.handleListItemClick(camdevice)} key={camdevice.deviceId}>
+            {this.state.camdevices.map((camdevice, i) => (
+              <ListItem id={"cam"+i} button onClick={() => this.handleListItemClick(camdevice)} key={camdevice.deviceId}>
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
                     <Videocam />
@@ -68,8 +68,8 @@ class SimpleDialog extends React.Component {
           <DialogTitle id="simple-dialog-title">Set your mic device</DialogTitle>
           { this.state.micdevices !== null ?
           <List>
-            {this.state.micdevices.map(micdevice => (
-              <ListItem button onClick={() => this.handleListItemClick(micdevice)} key={micdevice.deviceId}>
+            {this.state.micdevices.map((micdevice, j) => (
+              <ListItem id={"mic"+j} button onClick={() => this.handleListItemClick(micdevice)} key={micdevice.deviceId}>
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
                     <Mic />

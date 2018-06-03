@@ -213,7 +213,7 @@ class OpenviduHangoutsReact extends Component {
           if(minutes < 10){
             minutes = "0"+minutes;
           }
-          ul.innerHTML += '<li class="messageelement"><div class="usernameinformation"><span class="username">' + username + ": " + event.data + "</span></div><span class=\"hour\">" + hours + ":" + minutes + '</span></li>';
+          ul.innerHTML += '<li class="messageelement"><div class="usernameinformation"><span class="username">' + username + ":</span> <span class=\"messagecontent\">" + event.data + "</span></div><span class=\"hour\">" + hours + ":" + minutes + '</span></li>';
         });
 
 
