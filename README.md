@@ -1,10 +1,10 @@
 # Openvidu Hangouts React
 
-**OpenviduReact** is a room videoconference component library for [React](https://reactjs.org/).
+**OpenviduHangoutsReact** is a room videoconference component library for [React](https://reactjs.org/).
 
 It's written in [JavaScript](https://www.javascript.com/).
 
-To be able to work in the browser, OpenviduReact uses [openvidu-browser][openvidu-browser] to communicate with the [OpenVidu Server][openvidu-server].
+To be able to work in the browser, OpenviduReact uses [openvidu-browser][https://github.com/OpenVidu/openvidu/tree/master/openvidu-browser] to communicate with the [OpenVidu Server][https://github.com/OpenVidu/openvidu/tree/master/openvidu-server].
 
 To use AngularOpenVidu, [WebRTC](https://en.wikipedia.org/wiki/WebRTC) support is required (Chrome, Firefox, Opera).
 
@@ -21,10 +21,10 @@ To use AngularOpenVidu, [WebRTC](https://en.wikipedia.org/wiki/WebRTC) support i
 </p>
 
 <p align="center">
-   <img src="images/videocallhangouts.png" alt="screencast">
+   <img src="images/openvidudemo.png" alt="screencast">
 </p>
 
-In this demo you will see a use case of `openvidu-hangouts-react`, where you can test ALL the features included in this component.
+In this [demo](https://github.com/srivasd/demo-openvidu-hangouts) you will see a use case of `openvidu-hangouts-react`, where you can test ALL the features included in this component.
 
 
 ### Features
@@ -34,6 +34,7 @@ In this demo you will see a use case of `openvidu-hangouts-react`, where you can
 - Disable camera
 - Mute microphone
 - Toggle fullscreen video
+- Send messages with a chat
 
 ### Installation
 
@@ -157,6 +158,12 @@ export default App;
 | `ref`	| `fucntion` | required | Refers the child component OpenviduReact in order to init session |
 
 
-3. Deploy OpenVidu Server
+4. Run the following commands to start the app:
+
+  `npm install`
+
+  `npm start`
+
+5. Deploy OpenVidu Server
 
 Follow the instructions in [this page](http://openvidu.io/docs/reference-docs/openvidu-artifacts/) to deploy it with docker.
